@@ -62,7 +62,6 @@ function select(state) {
   let filter = characterFilter.characterFilter
   return {
     filter,
-    characters,
     results,
     isFetching,
     lastUpdated

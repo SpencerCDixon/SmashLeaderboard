@@ -26880,7 +26880,6 @@
 	  var filter = characterFilter.characterFilter;
 	  return {
 	    filter: filter,
-	    characters: characters,
 	    results: results,
 	    isFetching: isFetching,
 	    lastUpdated: lastUpdated
