@@ -46,15 +46,7 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var _react = __webpack_require__(1);
 
@@ -62,57 +54,24 @@
 
 	var _redux = __webpack_require__(157);
 
-	var Hello = (function (_React$Component) {
-	  _inherits(Hello, _React$Component);
+	var _reducers = __webpack_require__(166);
 
-	  function Hello(props) {
-	    _classCallCheck(this, Hello);
+	var _reducers2 = _interopRequireDefault(_reducers);
 
-	    _get(Object.getPrototypeOf(Hello.prototype), 'constructor', this).call(this, props);
-	  }
+	var _actions = __webpack_require__(167);
 
-	  _createClass(Hello, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'h1',
-	        null,
-	        'Hello World '
-	      );
-	    }
-	  }]);
+	var store = (0, _redux.createStore)(_reducers2['default']);
 
-	  return Hello;
-	})(_react2['default'].Component);
+	console.log(store.getState());
 
-	var rootNode = document.getElementById('react_app');
-
-	_react2['default'].render(_react2['default'].createElement(Hello, null), rootNode);
-
-	function counter(state, action) {
-	  if (state === undefined) state = 0;
-
-	  switch (action.type) {
-	    case 'INCREMENT':
-	      return state + 1;
-	    case 'DECREMENT':
-	      return state - 1;
-	    default:
-	      return state;
-	  }
-	}
-
-	var store = (0, _redux.createStore)(counter);
-
-	store.subscribe(function () {
+	var unsubscribe = store.subscribe(function () {
 	  return console.log(store.getState());
 	});
 
-	store.dispatch({ type: 'INCREMENT' });
-	store.dispatch({ type: 'INCREMENT' });
-	store.dispatch({ type: 'DECREMENT' });
-	store.dispatch({ type: 'INCREMENT' });
-	store.dispatch({ type: 'INCREMENT' });
+	store.dispatch((0, _actions.setCharacterFilter)(_actions.CharacterFilters.SHOW_MOST_USED));
+	store.dispatch((0, _actions.setCharacterFilter)(_actions.CharacterFilters.SHOW_LEAST_USED));
+
+	unsubscribe();
 
 /***/ },
 /* 1 */
@@ -21044,6 +21003,68 @@
 	}
 
 	module.exports = exports["default"];
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _actions = __webpack_require__(167);
+
+	var initialState = { characterFilter: _actions.CharacterFilters.SHOW_ALL };
+
+	function smashLeaderboard(state, action) {
+	  if (state === undefined) state = initialState;
+
+	  switch (action.type) {
+	    case _actions.SET_CHARACTER_FILTER:
+	      return Object.assign({}, state, {
+	        characterFilter: action.filter
+	      });
+	    default:
+	      return state;
+	  }
+	}
+
+	exports['default'] = smashLeaderboard;
+	module.exports = exports['default'];
+
+/***/ },
+/* 167 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.addCharacter = addCharacter;
+	exports.setCharacterFilter = setCharacterFilter;
+	var ADD_CHARACTER = 'ADD_CHARACTER';
+	exports.ADD_CHARACTER = ADD_CHARACTER;
+	var SET_CHARACTER_FILTER = 'SET_CHARACTER_FILTER';
+
+	exports.SET_CHARACTER_FILTER = SET_CHARACTER_FILTER;
+	var CharacterFilters = {
+	  SHOW_ALL: 'SHOW_ALL',
+	  SHOW_MOST_USED: 'SHOW_MOST_USED',
+	  SHOW_LEAST_USED: 'SHOW_LEAST_USED'
+	};
+
+	exports.CharacterFilters = CharacterFilters;
+
+	function addCharacter(name) {
+	  return { type: ADD_CHARACTER, name: name };
+	}
+
+	function setCharacterFilter(filter) {
+	  return { type: SET_CHARACTER_FILTER, filter: filter };
+	}
 
 /***/ }
 /******/ ]);
