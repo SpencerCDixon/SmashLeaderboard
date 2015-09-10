@@ -26801,7 +26801,7 @@
 	    name: _react.PropTypes.string.isRequired,
 	    image: _react.PropTypes.string
 	  })),
-	  characterFilter: _react.PropTypes.oneOf(['SHOW_ALL', 'SHOW_MOST_USED', 'SHOW_LEAST_USED']).isRequired
+	  filter: _react.PropTypes.oneOf(['SHOW_ALL', 'SHOW_MOST_USED', 'SHOW_LEAST_USED']).isRequired
 	};
 
 	var App = (function (_React$Component) {
@@ -26828,8 +26828,7 @@
 	      var characterFilter = _props.characterFilter;
 	      var characters = _props.characters;
 
-	      console.log(this.props.characters);
-	      var smashCharacters = this.props.characters.items.map(function (char) {
+	      var smashCharacters = this.props.results.map(function (char) {
 	        return _react2['default'].createElement(
 	          'li',
 	          null,
@@ -26849,7 +26848,7 @@
 	          'h1',
 	          null,
 	          'Current Filter: ',
-	          this.props.characterFilter
+	          this.props.filter
 	        ),
 	        _react2['default'].createElement(
 	          'ul',
@@ -26878,9 +26877,11 @@
 	  var lastUpdated = _ref.lastUpdated;
 	  var results = _ref.items;
 
+	  var filter = characterFilter.characterFilter;
 	  return {
-	    characterFilter: characterFilter,
+	    filter: filter,
 	    characters: characters,
+	    results: results,
 	    isFetching: isFetching,
 	    lastUpdated: lastUpdated
 	  };

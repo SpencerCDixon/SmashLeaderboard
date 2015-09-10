@@ -9,7 +9,7 @@ const propTypes = {
     name: PropTypes.string.isRequired,
     image: PropTypes.string
   })),
-  characterFilter: PropTypes.oneOf([
+  filter: PropTypes.oneOf([
     'SHOW_ALL',
     'SHOW_MOST_USED',
     'SHOW_LEAST_USED'
@@ -24,8 +24,7 @@ class App extends React.Component {
 
   render() {
     const { dispatch, characterFilter, characters } = this.props
-    console.log(this.props.characters);
-    let smashCharacters = this.props.characters.items.map(function(char) {
+    let smashCharacters = this.props.results.map(function(char) {
       return (
         <li>
           <img src={char.image} width='100px' />
@@ -37,7 +36,7 @@ class App extends React.Component {
     return (
       <div>
         <h1> 
-          Current Filter: {this.props.characterFilter}
+          Current Filter: {this.props.filter}
         </h1>
         <ul>
           {smashCharacters}
@@ -54,19 +53,20 @@ function select(state) {
   const {
     isFetching,
     lastUpdated,
-    items: results
+    items: results,
   } = characters || {
     isFetching: true,
     items: []
   };
 
+  let filter = characterFilter.characterFilter
   return {
-    characterFilter,
+    filter,
     characters,
+    results,
     isFetching,
     lastUpdated
   }
 }
-
 
 export default connect(select)(App);
