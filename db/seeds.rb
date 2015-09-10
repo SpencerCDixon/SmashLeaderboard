@@ -11,7 +11,7 @@ characters = [
 ]
 
 characters.each do |char|
-  Character.find_or_create_by(name: char, image: "https://en.wikipedia.org/wiki/Mario#/media/File:MarioSMBW.png")
+  Character.find_or_create_by(name: char, image: "http://www.ssbwiki.com/images/8/83/Mario_SSBB.jpg")
 end
 
 8.times do
