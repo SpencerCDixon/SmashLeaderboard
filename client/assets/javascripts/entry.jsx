@@ -1,17 +1,16 @@
 import React from 'react';
 import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import App from './containers/App';
 import smashLeaderboard from './reducers';
-import { setCharacterFilter, CharacterFilters } from './actions';
 
 let store = createStore(smashLeaderboard);
+let rootElement = document.getElementById('react_app');
 
-console.log(store.getState());
+React.render(
+  <Provider store={store}>
+   {() => <App />}
+  </Provider>,
+  rootElement
+)
 
-let unsubscribe = store.subscribe(() =>
-  console.log(store.getState())
-);
-
-store.dispatch(setCharacterFilter(CharacterFilters.SHOW_MOST_USED));
-store.dispatch(setCharacterFilter(CharacterFilters.SHOW_LEAST_USED));
-
-  unsubscribe();
