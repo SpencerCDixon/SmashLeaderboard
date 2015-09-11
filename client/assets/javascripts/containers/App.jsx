@@ -1,21 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+
+// Actions for fetching state
 import { setCharacterFilter, CharacterFilters } from '../actions';
 import { fetchCharacters } from '../actions';
 import { fetchUsers } from '../actions';
+
+// Memoized Selector
 import { smashSelector } from '../selectors/UserSelector';
-// Import any components I'll need
+
+// My 'Dumb' Components
+import Match from '../components/Match';
 
 const propTypes = {
   visibleCharacters: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     image: PropTypes.string
-  })),
-  filter: PropTypes.oneOf([
-    'SHOW_ALL',
-    'SHOW_MOST_USED',
-    'SHOW_LEAST_USED'
-  ]).isRequired
+  }))
+  // filter: PropTypes.oneOf([
+    // 'SHOW_ALL',
+    // 'SHOW_MOST_USED',
+    // 'SHOW_LEAST_USED'
+  // ]).isRequired
 }
 
 class App extends React.Component {
@@ -46,6 +52,7 @@ class App extends React.Component {
 
     return (
       <div className="row">
+        <Match /> 
         <div className="large-6 columns">
           <ul>
             {smashCharacters}

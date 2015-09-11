@@ -70,7 +70,7 @@
 
 	var _containersApp2 = _interopRequireDefault(_containersApp);
 
-	var _reducers = __webpack_require__(365);
+	var _reducers = __webpack_require__(366);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -26790,18 +26790,30 @@
 
 	var _reactRedux = __webpack_require__(352);
 
+	// Actions for fetching state
+
 	var _actions = __webpack_require__(362);
+
+	// Memoized Selector
 
 	var _selectorsUserSelector = __webpack_require__(363);
 
-	// Import any components I'll need
+	// My 'Dumb' Components
+
+	var _componentsMatch = __webpack_require__(365);
+
+	var _componentsMatch2 = _interopRequireDefault(_componentsMatch);
 
 	var propTypes = {
 	  visibleCharacters: _react.PropTypes.arrayOf(_react.PropTypes.shape({
 	    name: _react.PropTypes.string.isRequired,
 	    image: _react.PropTypes.string
-	  })),
-	  filter: _react.PropTypes.oneOf(['SHOW_ALL', 'SHOW_MOST_USED', 'SHOW_LEAST_USED']).isRequired
+	  }))
+	  // filter: PropTypes.oneOf([
+	  // 'SHOW_ALL',
+	  // 'SHOW_MOST_USED',
+	  // 'SHOW_LEAST_USED'
+	  // ]).isRequired
 	};
 
 	var App = (function (_React$Component) {
@@ -26857,6 +26869,7 @@
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'row' },
+	        _react2['default'].createElement(_componentsMatch2['default'], null),
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'large-6 columns' },
@@ -27107,6 +27120,56 @@
 
 /***/ },
 /* 365 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(184);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var Match = (function (_React$Component) {
+	  _inherits(Match, _React$Component);
+
+	  function Match(props) {
+	    _classCallCheck(this, Match);
+
+	    _get(Object.getPrototypeOf(Match.prototype), 'constructor', this).call(this, props);
+	  }
+
+	  _createClass(Match, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'h2',
+	        null,
+	        ' New Match Up '
+	      );
+	    }
+	  }]);
+
+	  return Match;
+	})(_react2['default'].Component);
+
+	exports['default'] = Match;
+	module.exports = exports['default'];
+
+/***/ },
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
