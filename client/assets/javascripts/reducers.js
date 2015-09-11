@@ -7,7 +7,6 @@ import { REQUEST_CHARACTERS,
          RECEIVE_USERS } from './actions';
 
 const initialState = { characterFilter: CharacterFilters.SHOW_ALL };
-
 const initialFetchState = { isFetching: false, didInvalidate: false, items: [] };
 
 function characters(state = initialFetchState, action) {

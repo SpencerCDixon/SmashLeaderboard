@@ -21,5 +21,8 @@
     "redux-thunk": "^0.1.0",
     "reselect": "^1.0.0",
     "webpack": "^1.12.1"
+  },
+  "devDependencies": {
+    "redux-devtools": "^2.1.0"
   }
 }
