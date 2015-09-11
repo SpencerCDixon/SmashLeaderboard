@@ -70,7 +70,7 @@
 
 	var _containersApp2 = _interopRequireDefault(_containersApp);
 
-	var _reducers = __webpack_require__(363);
+	var _reducers = __webpack_require__(365);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -26792,6 +26792,8 @@
 
 	var _actions = __webpack_require__(362);
 
+	var _selectorsUserSelector = __webpack_require__(363);
+
 	// Import any components I'll need
 
 	var propTypes = {
@@ -26827,7 +26829,7 @@
 	      var characterFilter = _props.characterFilter;
 	      var characters = _props.characters;
 
-	      var smashCharacters = this.props.chars.data.map(function (char) {
+	      var smashCharacters = this.props.characters.data.map(function (char) {
 	        return _react2['default'].createElement(
 	          'li',
 	          null,
@@ -26882,37 +26884,7 @@
 
 	App.propTypes = propTypes;
 
-	function select(state) {
-	  // const { characterFilter, characters } = state;
-	  // const {
-	  // isFetching,
-	  // lastUpdated,
-	  // items: results,
-	  // } = characters || {
-	  // isFetching: true,
-	  // items: []
-	  // };
-
-	  var chars = {
-	    isFetching: state.characters.isFetching,
-	    lastUpdated: state.characters.lastUpdated,
-	    data: state.characters.items
-	  };
-
-	  var users = {
-	    isFetching: state.users.isFetching,
-	    lastUpdated: state.users.lastUpdated,
-	    data: state.users.items
-	  };
-	  // will be used once I want to sort characters
-	  // let filter = characterFilter.characterFilter
-	  return {
-	    users: users,
-	    chars: chars
-	  };
-	}
-
-	exports['default'] = (0, _reactRedux.connect)(select)(App);
+	exports['default'] = (0, _reactRedux.connect)(_selectorsUserSelector.smashSelector)(App);
 	module.exports = exports['default'];
 
 /***/ },
@@ -27017,6 +26989,124 @@
 
 /***/ },
 /* 363 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _reselect = __webpack_require__(364);
+
+	var userSelector = function userSelector(state) {
+	  return state.users;
+	};
+	var charSelector = function charSelector(state) {
+	  return state.characters;
+	};
+
+	var smashSelector = (0, _reselect.createSelector)(userSelector, charSelector, function (users, characters) {
+	  return {
+	    users: {
+	      data: users.items,
+	      isFetching: users.isFetching,
+	      lastUpdated: users.lastUpdated
+	    },
+	    characters: {
+	      data: characters.items,
+	      isFetching: characters.isFetching,
+	      lastUpdated: characters.lastUpdated
+	    }
+	  };
+	});
+	exports.smashSelector = smashSelector;
+
+/***/ },
+/* 364 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.defaultMemoize = defaultMemoize;
+	exports.createSelectorCreator = createSelectorCreator;
+	exports.createSelector = createSelector;
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	function defaultEqualityCheck(a, b) {
+	    return a === b;
+	}
+
+	// TODO: Reintroduce comment about cache size, slightly rewritten
+
+	function defaultMemoize(func) {
+	    var equalityCheck = arguments.length <= 1 || arguments[1] === undefined ? defaultEqualityCheck : arguments[1];
+
+	    var lastArgs = null;
+	    var lastResult = null;
+	    return function () {
+	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	            args[_key] = arguments[_key];
+	        }
+
+	        if (lastArgs !== null && args.every(function (value, index) {
+	            return equalityCheck(value, lastArgs[index]);
+	        })) {
+	            return lastResult;
+	        }
+	        lastArgs = args;
+	        lastResult = func.apply(undefined, args);
+	        return lastResult;
+	    };
+	}
+
+	function createSelectorCreator(memoize) {
+	    for (var _len2 = arguments.length, memoizeOptions = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+	        memoizeOptions[_key2 - 1] = arguments[_key2];
+	    }
+
+	    return function () {
+	        for (var _len3 = arguments.length, funcs = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+	            funcs[_key3] = arguments[_key3];
+	        }
+
+	        var recomputations = 0;
+	        var resultFunc = funcs.pop();
+	        var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
+
+	        var memoizedResultFunc = memoize.apply(undefined, [function () {
+	            recomputations++;
+	            return resultFunc.apply(undefined, arguments);
+	        }].concat(memoizeOptions));
+
+	        var selector = function selector(state, props) {
+	            for (var _len4 = arguments.length, args = Array(_len4 > 2 ? _len4 - 2 : 0), _key4 = 2; _key4 < _len4; _key4++) {
+	                args[_key4 - 2] = arguments[_key4];
+	            }
+
+	            var params = dependencies.map(function (dependency) {
+	                return dependency.apply(undefined, [state, props].concat(args));
+	            });
+	            return memoizedResultFunc.apply(undefined, _toConsumableArray(params));
+	        };
+
+	        selector.recomputations = function () {
+	            return recomputations;
+	        };
+	        return selector;
+	    };
+	}
+
+	function createSelector() {
+	    return createSelectorCreator(defaultMemoize).apply(undefined, arguments);
+	}
+
+/***/ },
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

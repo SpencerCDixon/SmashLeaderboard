@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { setCharacterFilter, CharacterFilters } from '../actions';
 import { fetchCharacters } from '../actions';
 import { fetchUsers } from '../actions';
+import { smashSelector } from '../selectors/UserSelector';
 // Import any components I'll need
 
 const propTypes = {
@@ -26,7 +27,7 @@ class App extends React.Component {
 
   render() {
     const { dispatch, characterFilter, characters } = this.props
-    let smashCharacters = this.props.chars.data.map(function(char) {
+    let smashCharacters = this.props.characters.data.map(function(char) {
       return (
         <li>
           <img src={char.image} width='100px' />
@@ -62,34 +63,4 @@ class App extends React.Component {
 
 App.propTypes = propTypes;
 
-function select(state) {
-  // const { characterFilter, characters } = state;
-  // const {
-    // isFetching,
-    // lastUpdated,
-    // items: results,
-  // } = characters || {
-    // isFetching: true,
-    // items: []
-  // };
-
-  let chars = {
-    isFetching: state.characters.isFetching,
-    lastUpdated: state.characters.lastUpdated,
-    data: state.characters.items
-  }
-
-  let users = {
-    isFetching: state.users.isFetching,
-    lastUpdated: state.users.lastUpdated,
-    data: state.users.items
-  }
-  // will be used once I want to sort characters
-  // let filter = characterFilter.characterFilter
-  return {
-    users,
-    chars
-  }
-}
-
-export default connect(select)(App);
+export default connect(smashSelector)(App);
