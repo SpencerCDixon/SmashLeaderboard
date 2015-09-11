@@ -6,7 +6,6 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import App from './containers/App';
 import smashLeaderboard from './reducers';
-import { fetchCharacters } from './actions';
 
 const logger = createLogger({
   level: 'info',

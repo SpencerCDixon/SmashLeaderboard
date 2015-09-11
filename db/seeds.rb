@@ -14,6 +14,22 @@ characters.each do |char|
   Character.find_or_create_by(name: char, image: "http://www.ssbwiki.com/images/8/83/Mario_SSBB.jpg")
 end
 
-8.times do
-  User.create(email: Faker::Internet.email, password: "password", password_confirmation: "password")
+users = [
+  { first: "Spencer", last: "Dixon" },
+  { first: "Joel", last: "Sutherland" },
+  { first: "Dan", last: "Spitz" },
+  { first: "Frank", last: "Zhu" },
+  { first: "Jacob", last: "Horwitz" },
+  { first: "Chris", last: "Moses" },
+]
+
+users.each do |user_hash|
+  User.create(
+    first_name: user_hash[:first],
+    last_name:  user_hash[:last],
+    email: "#{user_hash[:first]}@smartscheduling.io",
+    password: "password",
+    password_confirmation: "password"
+  )
 end
+
