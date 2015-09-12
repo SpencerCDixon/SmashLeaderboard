@@ -93,7 +93,7 @@
 
 	var _containersApp2 = _interopRequireDefault(_containersApp);
 
-	var _reducers = __webpack_require__(507);
+	var _reducers = __webpack_require__(508);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -116,6 +116,9 @@
 	var rootElement = document.getElementById('react_app');
 
 	// TODO: Make sure dev panel only renders in Development
+	// TODO: Use normalzr to have a clean schema for store
+	// TODO: Use redux-actions instead of creating my own
+	// TODO:
 
 	var Root = (function (_React$Component) {
 	  _inherits(Root, _React$Component);
@@ -32077,7 +32080,7 @@
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'row' },
-	        _react2['default'].createElement(_componentsMatch2['default'], null)
+	        _react2['default'].createElement(_componentsMatch2['default'], this.props)
 	      );
 	    }
 	  }]);
@@ -32358,26 +32361,44 @@
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'large-3 columns' },
-	          _react2['default'].createElement(_Player2['default'], { playerNumber: 1 })
+	          _react2['default'].createElement(_Player2['default'], {
+	            playerNumber: 1,
+	            users: this.props.users.data,
+	            characters: this.props.characters.data
+	          })
 	        ),
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'large-3 columns' },
-	          _react2['default'].createElement(_Player2['default'], { playerNumber: 2 })
+	          _react2['default'].createElement(_Player2['default'], {
+	            playerNumber: 2,
+	            users: this.props.users.data,
+	            characters: this.props.characters.data
+	          })
 	        ),
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'large-3 columns' },
-	          _react2['default'].createElement(_Player2['default'], { playerNumber: 3 })
+	          _react2['default'].createElement(_Player2['default'], {
+	            playerNumber: 3,
+	            users: this.props.users.data,
+	            characters: this.props.characters.data
+	          })
 	        ),
 	        _react2['default'].createElement(
 	          'div',
 	          { className: 'large-3 columns' },
-	          _react2['default'].createElement(_Player2['default'], { playerNumber: 4 })
+	          _react2['default'].createElement(_Player2['default'], {
+	            playerNumber: 4,
+	            users: this.props.users.data,
+	            characters: this.props.characters.data
+	          })
 	        ),
 	        _react2['default'].createElement(
 	          _utilFoundationButton2['default'],
-	          { classNames: 'success' },
+	          { classNames: 'success', onClick: function () {
+	              return alert('hello');
+	            } },
 	          'Create Match'
 	        )
 	      );
@@ -32414,9 +32435,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var playerList = ["Spencer", "Joel", "Frank", "Dan", "Jacob", "Krishna"];
-	var characterList = ["Ness", "Samus", "Donkey Kong", "Marth", "Link"];
-
 	var Player = (function (_React$Component) {
 	  _inherits(Player, _React$Component);
 
@@ -32429,18 +32447,18 @@
 	  _createClass(Player, [{
 	    key: "render",
 	    value: function render() {
-	      var players = playerList.map(function (player) {
+	      var players = this.props.users.map(function (player) {
 	        return _react2["default"].createElement(
 	          "option",
-	          null,
-	          player
+	          { key: player.id },
+	          player.first_name
 	        );
 	      });
-	      characterList.map(function (char) {
+	      var characters = this.props.characters.map(function (char) {
 	        return _react2["default"].createElement(
 	          "option",
-	          null,
-	          char
+	          { key: char.id },
+	          char.name
 	        );
 	      });
 
@@ -32464,13 +32482,7 @@
 	          "select",
 	          { ref: "characterChoice" },
 	          _react2["default"].createElement("option", null),
-	          characterList.map(function (char) {
-	            return _react2["default"].createElement(
-	              "option",
-	              null,
-	              char
-	            );
-	          })
+	          characters
 	        )
 	      );
 	    }
@@ -32506,35 +32518,101 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var FoundationButton = (function (_React$Component) {
-	  _inherits(FoundationButton, _React$Component);
+	var _BaseComponent2 = __webpack_require__(507);
+
+	var _BaseComponent3 = _interopRequireDefault(_BaseComponent2);
+
+	var FoundationButton = (function (_BaseComponent) {
+	  _inherits(FoundationButton, _BaseComponent);
 
 	  function FoundationButton(props) {
 	    _classCallCheck(this, FoundationButton);
 
 	    _get(Object.getPrototypeOf(FoundationButton.prototype), 'constructor', this).call(this, props);
+	    this._bind('handleClick');
 	  }
 
 	  _createClass(FoundationButton, [{
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      if (this.props.onClick) {
+	        this.props.onClick();
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var classNames = "button " + (this.props.classNames ? this.props.classNames : '');
 	      return _react2['default'].createElement(
 	        'button',
-	        { className: classNames },
+	        { className: classNames, onClick: this.handleClick },
 	        this.props.children
 	      );
 	    }
 	  }]);
 
 	  return FoundationButton;
-	})(_react2['default'].Component);
+	})(_BaseComponent3['default']);
 
 	exports['default'] = FoundationButton;
 	module.exports = exports['default'];
 
 /***/ },
 /* 507 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(184);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var BaseComponent = (function (_React$Component) {
+	  _inherits(BaseComponent, _React$Component);
+
+	  function BaseComponent() {
+	    _classCallCheck(this, BaseComponent);
+
+	    _get(Object.getPrototypeOf(BaseComponent.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(BaseComponent, [{
+	    key: '_bind',
+	    value: function _bind() {
+	      var _this = this;
+
+	      for (var _len = arguments.length, methods = Array(_len), _key = 0; _key < _len; _key++) {
+	        methods[_key] = arguments[_key];
+	      }
+
+	      methods.forEach(function (method) {
+	        return _this[method] = _this[method].bind(_this);
+	      });
+	    }
+	  }]);
+
+	  return BaseComponent;
+	})(_react2['default'].Component);
+
+	exports['default'] = BaseComponent;
+	module.exports = exports['default'];
+
+/***/ },
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

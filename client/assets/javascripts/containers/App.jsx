@@ -52,7 +52,7 @@ class App extends React.Component {
 
     return (
       <div className="row">
-        <Match /> 
+        <Match {...this.props} /> 
       </div>
     )
   }

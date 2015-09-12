@@ -1,30 +1,16 @@
 import React, { findDOMNode, Component, PropTypes } from 'react';
 
-const playerList = [
-  "Spencer",
-  "Joel",
-  "Frank",
-  "Dan",
-  "Jacob",
-  "Krishna"
-]
-const characterList = [
-  "Ness",
-  "Samus",
-  "Donkey Kong",
-  "Marth",
-  "Link"
-]
-
 class Player extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
-    let players = playerList.map(function(player) {
-      return <option>{player}</option>
+    let players = this.props.users.map(function(player) {
+      return <option key={player.id}>{player.first_name}</option>
     });
-    characterList.map(function(char) { return <option>{char}</option> });
+    let characters = this.props.characters.map(function(char) { 
+      return <option key={char.id}>{char.name}</option>
+    });
   
     return (
       <div>
@@ -36,10 +22,7 @@ class Player extends React.Component {
 
         <select ref="characterChoice">
           <option></option>
-          {characterList.map(function(char) { 
-              return <option>{char}</option> 
-            })
-          }
+          {characters}
         </select>
       </div>
     )

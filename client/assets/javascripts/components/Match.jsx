@@ -11,19 +11,35 @@ class Match extends React.Component {
     return (
       <div className="row">
         <div className="large-3 columns">
-          <Player playerNumber={1}/>
+          <Player 
+            playerNumber={1}
+            users={this.props.users.data}
+            characters={this.props.characters.data}
+          />
         </div>
         <div className="large-3 columns">
-          <Player playerNumber={2}/>
+          <Player 
+            playerNumber={2}
+            users={this.props.users.data}
+            characters={this.props.characters.data}
+          />
         </div>
         <div className="large-3 columns">
-          <Player playerNumber={3}/>
+          <Player 
+            playerNumber={3}
+            users={this.props.users.data}
+            characters={this.props.characters.data}
+          />
         </div>
         <div className="large-3 columns">
-          <Player playerNumber={4}/>
+          <Player 
+            playerNumber={4}
+            users={this.props.users.data}
+            characters={this.props.characters.data}
+          />
         </div>
 
-        <FoundationButton classNames="success">
+        <FoundationButton classNames="success" onClick={() => alert('hello')}>
           Create Match
         </FoundationButton>
       </div>
