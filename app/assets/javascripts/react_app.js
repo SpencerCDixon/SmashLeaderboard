@@ -93,7 +93,7 @@
 
 	var _containersApp2 = _interopRequireDefault(_containersApp);
 
-	var _reducers = __webpack_require__(505);
+	var _reducers = __webpack_require__(507);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -105,7 +105,9 @@
 	  }
 	});
 
-	var createStoreWithMiddleware = (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2['default'], logger), (0, _reduxDevtools.devTools)(), (0, _reduxDevtools.persistState)(window.location.href.match(/[?&]debug_session=([^&]+)\b/)))(_redux.createStore);
+	var createStoreWithMiddleware = (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2['default'], logger), (0, _reduxDevtools.devTools)(),
+	// Lets you write ?debug_session=<name> in address bar to persist debug sessions
+	(0, _reduxDevtools.persistState)(window.location.href.match(/[?&]debug_session=([^&]+)\b/)))(_redux.createStore);
 
 	// Create store with reducer (smashLeaderboard)
 	var store = createStoreWithMiddleware(_reducers2['default']);
@@ -32055,53 +32057,27 @@
 	      var characterFilter = _props.characterFilter;
 	      var characters = _props.characters;
 
-	      var smashCharacters = this.props.characters.data.map(function (char) {
-	        return _react2['default'].createElement(
-	          'li',
-	          null,
-	          _react2['default'].createElement('img', { src: char.image, width: '100px' }),
-	          _react2['default'].createElement(
-	            'h3',
-	            null,
-	            char.name
-	          )
-	        );
-	      });
+	      // let smashCharacters = this.props.characters.data.map(function(char) {
+	      // return (
+	      // <li>
+	      // <img src={char.image} width='100px' />
+	      // <h3>{char.name}</h3>
+	      // </li>
+	      // )
+	      // });
 
-	      var users = this.props.users.data.map(function (user) {
-	        return _react2['default'].createElement(
-	          'li',
-	          null,
-	          _react2['default'].createElement(
-	            'h1',
-	            null,
-	            user.first_name
-	          )
-	        );
-	      });
+	      // let users = this.props.users.data.map(function(user) {
+	      // return (
+	      // <li>
+	      // <h1>{user.first_name}</h1>
+	      // </li>
+	      // )
+	      // });
 
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'row' },
-	        _react2['default'].createElement(_componentsMatch2['default'], null),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'large-6 columns' },
-	          _react2['default'].createElement(
-	            'ul',
-	            null,
-	            smashCharacters
-	          )
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          { className: 'large-6 columns' },
-	          _react2['default'].createElement(
-	            'ul',
-	            null,
-	            users
-	          )
-	        )
+	        _react2['default'].createElement(_componentsMatch2['default'], null)
 	      );
 	    }
 	  }]);
@@ -32356,6 +32332,14 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Player = __webpack_require__(505);
+
+	var _Player2 = _interopRequireDefault(_Player);
+
+	var _utilFoundationButton = __webpack_require__(506);
+
+	var _utilFoundationButton2 = _interopRequireDefault(_utilFoundationButton);
+
 	var Match = (function (_React$Component) {
 	  _inherits(Match, _React$Component);
 
@@ -32369,9 +32353,33 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2['default'].createElement(
-	        'h2',
-	        null,
-	        ' New Match Up '
+	        'div',
+	        { className: 'row' },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'large-3 columns' },
+	          _react2['default'].createElement(_Player2['default'], { playerNumber: 1 })
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'large-3 columns' },
+	          _react2['default'].createElement(_Player2['default'], { playerNumber: 2 })
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'large-3 columns' },
+	          _react2['default'].createElement(_Player2['default'], { playerNumber: 3 })
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: 'large-3 columns' },
+	          _react2['default'].createElement(_Player2['default'], { playerNumber: 4 })
+	        ),
+	        _react2['default'].createElement(
+	          _utilFoundationButton2['default'],
+	          { classNames: 'success' },
+	          'Create Match'
+	        )
 	      );
 	    }
 	  }]);
@@ -32384,6 +32392,149 @@
 
 /***/ },
 /* 505 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(184);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var playerList = ["Spencer", "Joel", "Frank", "Dan", "Jacob", "Krishna"];
+	var characterList = ["Ness", "Samus", "Donkey Kong", "Marth", "Link"];
+
+	var Player = (function (_React$Component) {
+	  _inherits(Player, _React$Component);
+
+	  function Player(props) {
+	    _classCallCheck(this, Player);
+
+	    _get(Object.getPrototypeOf(Player.prototype), "constructor", this).call(this, props);
+	  }
+
+	  _createClass(Player, [{
+	    key: "render",
+	    value: function render() {
+	      var players = playerList.map(function (player) {
+	        return _react2["default"].createElement(
+	          "option",
+	          null,
+	          player
+	        );
+	      });
+	      characterList.map(function (char) {
+	        return _react2["default"].createElement(
+	          "option",
+	          null,
+	          char
+	        );
+	      });
+
+	      return _react2["default"].createElement(
+	        "div",
+	        null,
+	        _react2["default"].createElement(
+	          "h1",
+	          null,
+	          " Player ",
+	          this.props.playerNumber,
+	          " "
+	        ),
+	        _react2["default"].createElement(
+	          "select",
+	          { ref: "playerChoice" },
+	          _react2["default"].createElement("option", null),
+	          players
+	        ),
+	        _react2["default"].createElement(
+	          "select",
+	          { ref: "characterChoice" },
+	          _react2["default"].createElement("option", null),
+	          characterList.map(function (char) {
+	            return _react2["default"].createElement(
+	              "option",
+	              null,
+	              char
+	            );
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Player;
+	})(_react2["default"].Component);
+
+	exports["default"] = Player;
+	module.exports = exports["default"];
+
+/***/ },
+/* 506 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(184);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var FoundationButton = (function (_React$Component) {
+	  _inherits(FoundationButton, _React$Component);
+
+	  function FoundationButton(props) {
+	    _classCallCheck(this, FoundationButton);
+
+	    _get(Object.getPrototypeOf(FoundationButton.prototype), 'constructor', this).call(this, props);
+	  }
+
+	  _createClass(FoundationButton, [{
+	    key: 'render',
+	    value: function render() {
+	      var classNames = "button " + (this.props.classNames ? this.props.classNames : '');
+	      return _react2['default'].createElement(
+	        'button',
+	        { className: classNames },
+	        this.props.children
+	      );
+	    }
+	  }]);
+
+	  return FoundationButton;
+	})(_react2['default'].Component);
+
+	exports['default'] = FoundationButton;
+	module.exports = exports['default'];
+
+/***/ },
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

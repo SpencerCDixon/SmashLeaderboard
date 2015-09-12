@@ -33,36 +33,26 @@ class App extends React.Component {
 
   render() {
     const { dispatch, characterFilter, characters } = this.props
-    let smashCharacters = this.props.characters.data.map(function(char) {
-      return (
-        <li>
-          <img src={char.image} width='100px' />
-          <h3>{char.name}</h3>
-        </li>
-      )
-    });
+    // let smashCharacters = this.props.characters.data.map(function(char) {
+      // return (
+        // <li>
+          // <img src={char.image} width='100px' />
+          // <h3>{char.name}</h3>
+        // </li>
+      // )
+    // });
 
-    let users = this.props.users.data.map(function(user) {
-      return (
-        <li>
-          <h1>{user.first_name}</h1>
-        </li>
-      )
-    });
+    // let users = this.props.users.data.map(function(user) {
+      // return (
+        // <li>
+          // <h1>{user.first_name}</h1>
+        // </li>
+      // )
+    // });
 
     return (
       <div className="row">
         <Match /> 
-        <div className="large-6 columns">
-          <ul>
-            {smashCharacters}
-          </ul>
-        </div>
-        <div className="large-6 columns">
-          <ul>
-            {users}
-          </ul>
-        </div>
       </div>
     )
   }

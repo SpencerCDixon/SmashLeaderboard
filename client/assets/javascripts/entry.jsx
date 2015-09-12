@@ -24,6 +24,7 @@ const logger = createLogger({
 const createStoreWithMiddleware = compose(
   applyMiddleware(thunkMiddleware, logger),
   devTools(),
+  // Lets you write ?debug_session=<name> in address bar to persist debug sessions
   persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore)
 
