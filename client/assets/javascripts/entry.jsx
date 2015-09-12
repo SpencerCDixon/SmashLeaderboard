@@ -37,7 +37,7 @@ let rootElement = document.getElementById('react_app');
 // TODO: Make sure dev panel only renders in Development
 // TODO: Use normalzr to have a clean schema for store
 // TODO: Use redux-actions instead of creating my own
-// TODO:
+// TODO: Use Immutable.js instead of Object.assign({})
 
 class Root extends React.Component {
   render() {

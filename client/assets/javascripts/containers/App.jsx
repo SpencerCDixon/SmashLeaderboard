@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import BaseComponent from '../components/BaseComponent';
 import { connect } from 'react-redux';
 
 // Actions for fetching state
 import { setCharacterFilter, CharacterFilters } from '../actions';
 import { fetchCharacters } from '../actions';
 import { fetchUsers } from '../actions';
+import { addMatch } from '../actions';
 
 // Memoized Selector
 import { smashSelector } from '../selectors/UserSelector';
@@ -24,35 +26,27 @@ const propTypes = {
   // ]).isRequired
 }
 
-class App extends React.Component {
+class App extends BaseComponent {
+  constructor(props) {
+    super(props);
+    this._bind('addMatch');
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchCharacters());
     dispatch(fetchUsers());
   }
 
+  addMatch(match) {
+    this.props.dispatch(addMatch(match));
+  }
+
   render() {
     const { dispatch, characterFilter, characters } = this.props
-    // let smashCharacters = this.props.characters.data.map(function(char) {
-      // return (
-        // <li>
-          // <img src={char.image} width='100px' />
-          // <h3>{char.name}</h3>
-        // </li>
-      // )
-    // });
-
-    // let users = this.props.users.data.map(function(user) {
-      // return (
-        // <li>
-          // <h1>{user.first_name}</h1>
-        // </li>
-      // )
-    // });
-
     return (
       <div className="row">
-        <Match {...this.props} /> 
+        <Match addMatch={this.addMatch} {...this.props} /> 
       </div>
     )
   }

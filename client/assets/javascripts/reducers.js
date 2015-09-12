@@ -4,7 +4,8 @@ import { combineReducers} from 'redux';
 import { REQUEST_CHARACTERS,
          RECEIVE_CHARACTERS,
          REQUEST_USERS,
-         RECEIVE_USERS } from './actions';
+         RECEIVE_USERS,
+         ADD_MATCH } from './actions';
 
 const initialState = { characterFilter: CharacterFilters.SHOW_ALL };
 const initialFetchState = { isFetching: false, didInvalidate: false, items: [] };
@@ -58,10 +59,24 @@ function users(state = initialFetchState, action) {
   }
 }
 
+const initialMatchState = { items: [] }
+
+function matches(state = initialMatchState, action) {
+  switch (action.type) {
+  case ADD_MATCH:
+    return Object.assign({}, state, {
+      items: [...state.items, action.match]
+    });
+  default:
+    return state;
+  }
+}
+
 const smashLeaderboard = combineReducers({
   characters,
   characterFilter,
-  users
+  users,
+  matches
 });
 
 export default smashLeaderboard;
