@@ -2,11 +2,13 @@ import { createSelector } from 'reselect';
 
 const userSelector = state => state.users;
 const charSelector = state => state.characters;
+const matchSelector = state => state.matches;
 
 export const smashSelector = createSelector(
   userSelector,
   charSelector,
-  (users, characters) => {
+  matchSelector,
+  (users, characters, matches) => {
     return {
       users: {
         data: users.items,
@@ -17,6 +19,9 @@ export const smashSelector = createSelector(
         data: characters.items,
         isFetching: characters.isFetching,
         lastUpdated: characters.lastUpdated
+      },
+      matches: {
+        data: matches.items
       }
     }
   }

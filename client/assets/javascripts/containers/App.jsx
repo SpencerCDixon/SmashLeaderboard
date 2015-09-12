@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { setCharacterFilter, CharacterFilters } from '../actions';
 import { fetchCharacters } from '../actions';
 import { fetchUsers } from '../actions';
-import { addMatch } from '../actions';
+import { saveMatch } from '../actions';
 
 // Memoized Selector
 import { smashSelector } from '../selectors/UserSelector';
 
 // My 'Dumb' Components
 import Match from '../components/Match';
+import MatchList from '../components/MatchList';
 
 const propTypes = {
   visibleCharacters: PropTypes.arrayOf(PropTypes.shape({
@@ -39,7 +40,7 @@ class App extends BaseComponent {
   }
 
   addMatch(match) {
-    this.props.dispatch(addMatch(match));
+    this.props.dispatch(saveMatch(match));
   }
 
   render() {
@@ -47,6 +48,7 @@ class App extends BaseComponent {
     return (
       <div className="row">
         <Match addMatch={this.addMatch} {...this.props} /> 
+        <MatchList matches={this.props.matches} />
       </div>
     )
   }

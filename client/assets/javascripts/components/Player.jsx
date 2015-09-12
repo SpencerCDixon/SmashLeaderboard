@@ -24,10 +24,10 @@ class Player extends BaseComponent {
 
   render() {
     let players = this.props.users.map(function(player) {
-      return <option key={player.id}>{player.first_name}</option>
+      return <option value={player.id} key={player.id}>{player.first_name}</option>
     });
     let characters = this.props.characters.map(function(char) { 
-      return <option key={char.id}>{char.name}</option>
+      return <option value={char.id} key={char.id}>{char.name}</option>
     });
   
     return (

@@ -93,7 +93,7 @@
 
 	var _containersApp2 = _interopRequireDefault(_containersApp);
 
-	var _reducers = __webpack_require__(508);
+	var _reducers = __webpack_require__(509);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -32029,6 +32029,10 @@
 
 	var _componentsMatch2 = _interopRequireDefault(_componentsMatch);
 
+	var _componentsMatchList = __webpack_require__(508);
+
+	var _componentsMatchList2 = _interopRequireDefault(_componentsMatchList);
+
 	var propTypes = {
 	  visibleCharacters: _react.PropTypes.arrayOf(_react.PropTypes.shape({
 	    name: _react.PropTypes.string.isRequired,
@@ -32062,7 +32066,7 @@
 	  }, {
 	    key: 'addMatch',
 	    value: function addMatch(match) {
-	      this.props.dispatch((0, _actions.addMatch)(match));
+	      this.props.dispatch((0, _actions.saveMatch)(match));
 	    }
 	  }, {
 	    key: 'render',
@@ -32075,7 +32079,8 @@
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'row' },
-	        _react2['default'].createElement(_componentsMatch2['default'], _extends({ addMatch: this.addMatch }, this.props))
+	        _react2['default'].createElement(_componentsMatch2['default'], _extends({ addMatch: this.addMatch }, this.props)),
+	        _react2['default'].createElement(_componentsMatchList2['default'], { matches: this.props.matches })
 	      );
 	    }
 	  }]);
@@ -32162,7 +32167,9 @@
 	exports.requestUsers = requestUsers;
 	exports.receiveUsers = receiveUsers;
 	exports.fetchUsers = fetchUsers;
-	exports.addMatch = addMatch;
+	exports.saveMatchStart = saveMatchStart;
+	exports.saveMatchSuccess = saveMatchSuccess;
+	exports.saveMatch = saveMatch;
 	var ADD_CHARACTER = 'ADD_CHARACTER';
 	exports.ADD_CHARACTER = ADD_CHARACTER;
 	var SET_CHARACTER_FILTER = 'SET_CHARACTER_FILTER';
@@ -32247,12 +32254,32 @@
 	// Matches
 	//////////
 
-	var ADD_MATCH = 'ADD_MATCH';
+	var SAVE_MATCH_START = 'SAVE_MATCH_START';
+	exports.SAVE_MATCH_START = SAVE_MATCH_START;
+	var SAVE_MATCH_SUCCESS = 'SAVE_MATCH_SUCCESS';
 
-	exports.ADD_MATCH = ADD_MATCH;
+	exports.SAVE_MATCH_SUCCESS = SAVE_MATCH_SUCCESS;
 
-	function addMatch(match) {
-	  return { type: ADD_MATCH, match: match };
+	function saveMatchStart() {
+	  return { type: SAVE_MATCH_START };
+	}
+
+	function saveMatchSuccess(data) {
+	  return {
+	    type: SAVE_MATCH_SUCCESS,
+	    matches: data,
+	    receivedAt: Date.now()
+	  };
+	}
+
+	function saveMatch(match) {
+	  return function (dispatch) {
+	    dispatch(saveMatchStart());
+
+	    return $.post('/matches', match, function (data) {
+	      dispatch(saveMatchSuccess(data));
+	    });
+	  };
 	}
 
 /***/ },
@@ -32273,8 +32300,11 @@
 	var charSelector = function charSelector(state) {
 	  return state.characters;
 	};
+	var matchSelector = function matchSelector(state) {
+	  return state.matches;
+	};
 
-	var smashSelector = (0, _reselect.createSelector)(userSelector, charSelector, function (users, characters) {
+	var smashSelector = (0, _reselect.createSelector)(userSelector, charSelector, matchSelector, function (users, characters, matches) {
 	  return {
 	    users: {
 	      data: users.items,
@@ -32285,6 +32315,9 @@
 	      data: characters.items,
 	      isFetching: characters.isFetching,
 	      lastUpdated: characters.lastUpdated
+	    },
+	    matches: {
+	      data: matches.items
 	    }
 	  };
 	});
@@ -32431,21 +32464,23 @@
 	    key: 'createMatch',
 	    value: function createMatch() {
 	      this.props.addMatch({
-	        playerOne: {
-	          user: this.refs.playerOne.getPlayerChoice(),
-	          character: this.refs.playerOne.getCharacterChoice()
-	        },
-	        playerTwo: {
-	          user: this.refs.playerTwo.getPlayerChoice(),
-	          character: this.refs.playerTwo.getCharacterChoice()
-	        },
-	        playerThree: {
-	          user: this.refs.playerThree.getPlayerChoice(),
-	          character: this.refs.playerThree.getCharacterChoice()
-	        },
-	        playerFour: {
-	          user: this.refs.playerFour.getPlayerChoice(),
-	          character: this.refs.playerFour.getCharacterChoice()
+	        match: {
+	          playerOne: {
+	            user: this.refs.playerOne.getPlayerChoice(),
+	            character: this.refs.playerOne.getCharacterChoice()
+	          },
+	          playerTwo: {
+	            user: this.refs.playerTwo.getPlayerChoice(),
+	            character: this.refs.playerTwo.getCharacterChoice()
+	          },
+	          playerThree: {
+	            user: this.refs.playerThree.getPlayerChoice(),
+	            character: this.refs.playerThree.getCharacterChoice()
+	          },
+	          playerFour: {
+	            user: this.refs.playerFour.getPlayerChoice(),
+	            character: this.refs.playerFour.getCharacterChoice()
+	          }
 	        }
 	      });
 	      this.resetPlayers();
@@ -32570,14 +32605,14 @@
 	      var players = this.props.users.map(function (player) {
 	        return _react2['default'].createElement(
 	          'option',
-	          { key: player.id },
+	          { value: player.id, key: player.id },
 	          player.first_name
 	        );
 	      });
 	      var characters = this.props.characters.map(function (char) {
 	        return _react2['default'].createElement(
 	          'option',
-	          { key: char.id },
+	          { value: char.id, key: char.id },
 	          char.name
 	        );
 	      });
@@ -32687,7 +32722,78 @@
 	  value: true
 	});
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(184);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _BaseComponent2 = __webpack_require__(501);
+
+	var _BaseComponent3 = _interopRequireDefault(_BaseComponent2);
+
+	var MatchList = (function (_BaseComponent) {
+	  _inherits(MatchList, _BaseComponent);
+
+	  function MatchList(props) {
+	    _classCallCheck(this, MatchList);
+
+	    _get(Object.getPrototypeOf(MatchList.prototype), 'constructor', this).call(this, props);
+	    this._bind();
+	  }
+
+	  _createClass(MatchList, [{
+	    key: 'render',
+	    value: function render() {
+	      var matches = this.props.matches.data.map(function (match) {
+	        return _react2['default'].createElement(
+	          'li',
+	          null,
+	          match.p_one_id,
+	          ' fought ',
+	          match.p_two_id
+	        );
+	      });
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        _react2['default'].createElement(
+	          'h1',
+	          null,
+	          ' Match List '
+	        ),
+	        _react2['default'].createElement(
+	          'ul',
+	          null,
+	          matches
+	        )
+	      );
+	    }
+	  }]);
+
+	  return MatchList;
+	})(_BaseComponent3['default']);
+
+	exports['default'] = MatchList;
+	module.exports = exports['default'];
+
+/***/ },
+/* 509 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
 	var _actions = __webpack_require__(502);
 
@@ -32695,6 +32801,7 @@
 
 	var initialState = { characterFilter: _actions.CharacterFilters.SHOW_ALL };
 	var initialFetchState = { isFetching: false, didInvalidate: false, items: [] };
+	var initialSaveState = { isSaving: false, didInvalidate: false, items: [] };
 
 	function characters(state, action) {
 	  if (state === undefined) state = initialFetchState;
@@ -32751,15 +32858,21 @@
 	  }
 	}
 
-	var initialMatchState = { items: [] };
-
 	function matches(state, action) {
-	  if (state === undefined) state = initialMatchState;
+	  if (state === undefined) state = initialFetchState;
 
 	  switch (action.type) {
-	    case _actions.ADD_MATCH:
+	    case _actions.SAVE_MATCH_START:
 	      return Object.assign({}, state, {
-	        items: [].concat(_toConsumableArray(state.items), [action.match])
+	        isSaving: true,
+	        didInvalidate: false
+	      });
+	    case _actions.SAVE_MATCH_SUCCESS:
+	      return Object.assign({}, state, {
+	        isSaving: false,
+	        didInvalidate: false,
+	        items: action.matches,
+	        lastUpdated: action.receivedAt
 	      });
 	    default:
 	      return state;

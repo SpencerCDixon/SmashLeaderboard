@@ -76,10 +76,30 @@ export function fetchUsers() {
 // Matches
 //////////
 
-export const ADD_MATCH = 'ADD_MATCH';
+export const SAVE_MATCH_START = 'SAVE_MATCH_START';
+export const SAVE_MATCH_SUCCESS = 'SAVE_MATCH_SUCCESS';
 
-export function addMatch(match) {
-  return { type: ADD_MATCH, match };
+export function saveMatchStart() {
+  return { type: SAVE_MATCH_START }
+}
+
+
+export function saveMatchSuccess(data) {
+  return {
+    type: SAVE_MATCH_SUCCESS,
+    matches: data,
+    receivedAt: Date.now()
+  }
+}
+
+export function saveMatch(match) {
+  return function(dispatch) {
+    dispatch(saveMatchStart());
+
+    return $.post('/matches', match, function(data) {
+      dispatch(saveMatchSuccess(data));
+    })
+  }
 }
 
 

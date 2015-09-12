@@ -18,21 +18,23 @@ class Match extends BaseComponent {
 
   createMatch() {
     this.props.addMatch({
-      playerOne: {
-        user: this.refs.playerOne.getPlayerChoice(),
-        character: this.refs.playerOne.getCharacterChoice()
-      },
-      playerTwo: {
-        user: this.refs.playerTwo.getPlayerChoice(),
-        character: this.refs.playerTwo.getCharacterChoice()
-      },
-      playerThree: {
-        user: this.refs.playerThree.getPlayerChoice(),
-        character: this.refs.playerThree.getCharacterChoice()
-      },
-      playerFour: {
-        user: this.refs.playerFour.getPlayerChoice(),
-        character: this.refs.playerFour.getCharacterChoice()
+      match: {
+        playerOne: {
+          user: this.refs.playerOne.getPlayerChoice(),
+          character: this.refs.playerOne.getCharacterChoice()
+        },
+        playerTwo: {
+          user: this.refs.playerTwo.getPlayerChoice(),
+          character: this.refs.playerTwo.getCharacterChoice()
+        },
+        playerThree: {
+          user: this.refs.playerThree.getPlayerChoice(),
+          character: this.refs.playerThree.getCharacterChoice()
+        },
+        playerFour: {
+          user: this.refs.playerFour.getPlayerChoice(),
+          character: this.refs.playerFour.getCharacterChoice()
+        }
       }
     })
     this.resetPlayers()
