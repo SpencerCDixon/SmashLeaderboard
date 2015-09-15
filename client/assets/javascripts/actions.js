@@ -78,11 +78,34 @@ export function fetchUsers() {
 
 export const SAVE_MATCH_START = 'SAVE_MATCH_START';
 export const SAVE_MATCH_SUCCESS = 'SAVE_MATCH_SUCCESS';
+export const REQUEST_MATCHES = 'REQUEST_MATCHES';
+export const RECEIVE_MATCHES = 'RECEIVE_MATCHES';
+
+export function requestMatches() {
+  return { type: REQUEST_MATCHES };
+}
+
+export function receiveMatches(data) {
+  return {
+    type: RECEIVE_MATCHES,
+    matches: data,
+    receivedAt: Date.now()
+  }
+}
+
+export function fetchMatches() {
+  return function(dispatch) {
+    dispatch(requestMatches());
+
+    return $.getJSON('/matches', function(data) {
+      dispatch(receiveMatches(data));
+    });
+  }
+}
 
 export function saveMatchStart() {
   return { type: SAVE_MATCH_START }
 }
-
 
 export function saveMatchSuccess(data) {
   return {

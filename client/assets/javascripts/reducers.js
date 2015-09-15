@@ -6,7 +6,9 @@ import { REQUEST_CHARACTERS,
          REQUEST_USERS,
          RECEIVE_USERS,
          SAVE_MATCH_START,
-         SAVE_MATCH_SUCCESS } from './actions';
+         SAVE_MATCH_SUCCESS,
+         REQUEST_MATCHES,
+         RECEIVE_MATCHES } from './actions';
 
 const initialState      = { characterFilter: CharacterFilters.SHOW_ALL };
 const initialFetchState = { isFetching: false, didInvalidate: false, items: [] };
@@ -63,6 +65,18 @@ function users(state = initialFetchState, action) {
 
 function matches(state = initialFetchState, action) {
   switch (action.type) {
+  case REQUEST_MATCHES:
+    return Object.assign({}, state, {
+      isFetching: true,
+      didInvalidate: false
+    });
+  case RECEIVE_MATCHES:
+    return Object.assign({}, state, {
+      isFetching: false,
+      didInvalidate: false,
+      items: action.matches,
+      lastUpdated: action.receivedAt
+    });
   case SAVE_MATCH_START:
     return Object.assign({}, state, {
       isSaving: true,

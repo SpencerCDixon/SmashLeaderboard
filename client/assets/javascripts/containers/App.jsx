@@ -3,13 +3,15 @@ import BaseComponent from '../components/BaseComponent';
 import { connect } from 'react-redux';
 
 // Actions for fetching state
-import { setCharacterFilter, CharacterFilters } from '../actions';
-import { fetchCharacters } from '../actions';
-import { fetchUsers } from '../actions';
-import { saveMatch } from '../actions';
+import { CharacterFilters,
+         setCharacterFilter,
+         fetchCharacters,
+         fetchUsers,
+         saveMatch,
+         fetchMatches } from '../actions';
 
 // Memoized Selector
-import { smashSelector } from '../selectors/UserSelector';
+import { smashSelector } from '../selectors/SmashSelector';
 
 // My 'Dumb' Components
 import Match from '../components/Match';
@@ -37,6 +39,7 @@ class App extends BaseComponent {
     const { dispatch } = this.props;
     dispatch(fetchCharacters());
     dispatch(fetchUsers());
+    dispatch(fetchMatches());
   }
 
   addMatch(match) {

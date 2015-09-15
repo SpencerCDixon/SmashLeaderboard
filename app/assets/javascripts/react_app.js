@@ -32021,7 +32021,7 @@
 
 	// Memoized Selector
 
-	var _selectorsUserSelector = __webpack_require__(503);
+	var _selectorsSmashSelector = __webpack_require__(503);
 
 	// My 'Dumb' Components
 
@@ -32062,6 +32062,7 @@
 
 	      dispatch((0, _actions.fetchCharacters)());
 	      dispatch((0, _actions.fetchUsers)());
+	      dispatch((0, _actions.fetchMatches)());
 	    }
 	  }, {
 	    key: 'addMatch',
@@ -32090,7 +32091,7 @@
 
 	App.propTypes = propTypes;
 
-	exports['default'] = (0, _reactRedux.connect)(_selectorsUserSelector.smashSelector)(App);
+	exports['default'] = (0, _reactRedux.connect)(_selectorsSmashSelector.smashSelector)(App);
 	module.exports = exports['default'];
 
 /***/ },
@@ -32167,6 +32168,9 @@
 	exports.requestUsers = requestUsers;
 	exports.receiveUsers = receiveUsers;
 	exports.fetchUsers = fetchUsers;
+	exports.requestMatches = requestMatches;
+	exports.receiveMatches = receiveMatches;
+	exports.fetchMatches = fetchMatches;
 	exports.saveMatchStart = saveMatchStart;
 	exports.saveMatchSuccess = saveMatchSuccess;
 	exports.saveMatch = saveMatch;
@@ -32257,8 +32261,34 @@
 	var SAVE_MATCH_START = 'SAVE_MATCH_START';
 	exports.SAVE_MATCH_START = SAVE_MATCH_START;
 	var SAVE_MATCH_SUCCESS = 'SAVE_MATCH_SUCCESS';
-
 	exports.SAVE_MATCH_SUCCESS = SAVE_MATCH_SUCCESS;
+	var REQUEST_MATCHES = 'REQUEST_MATCHES';
+	exports.REQUEST_MATCHES = REQUEST_MATCHES;
+	var RECEIVE_MATCHES = 'RECEIVE_MATCHES';
+
+	exports.RECEIVE_MATCHES = RECEIVE_MATCHES;
+
+	function requestMatches() {
+	  return { type: REQUEST_MATCHES };
+	}
+
+	function receiveMatches(data) {
+	  return {
+	    type: RECEIVE_MATCHES,
+	    matches: data,
+	    receivedAt: Date.now()
+	  };
+	}
+
+	function fetchMatches() {
+	  return function (dispatch) {
+	    dispatch(requestMatches());
+
+	    return $.getJSON('/matches', function (data) {
+	      dispatch(receiveMatches(data));
+	    });
+	  };
+	}
 
 	function saveMatchStart() {
 	  return { type: SAVE_MATCH_START };
@@ -32862,6 +32892,18 @@
 	  if (state === undefined) state = initialFetchState;
 
 	  switch (action.type) {
+	    case _actions.REQUEST_MATCHES:
+	      return Object.assign({}, state, {
+	        isFetching: true,
+	        didInvalidate: false
+	      });
+	    case _actions.RECEIVE_MATCHES:
+	      return Object.assign({}, state, {
+	        isFetching: false,
+	        didInvalidate: false,
+	        items: action.matches,
+	        lastUpdated: action.receivedAt
+	      });
 	    case _actions.SAVE_MATCH_START:
 	      return Object.assign({}, state, {
 	        isSaving: true,
