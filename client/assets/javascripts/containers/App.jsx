@@ -14,7 +14,7 @@ import { CharacterFilters,
 import { smashSelector } from '../selectors/SmashSelector';
 
 // My 'Dumb' Components
-import Match from '../components/Match';
+import MatchRecorder from '../components/MatchRecorder';
 import MatchList from '../components/MatchList';
 
 const propTypes = {
@@ -50,7 +50,7 @@ class App extends BaseComponent {
     const { dispatch, characterFilter, characters } = this.props
     return (
       <div className="row">
-        <Match addMatch={this.addMatch} {...this.props} /> 
+        <MatchRecorder addMatch={this.addMatch} {...this.props} />
         <MatchList matches={this.props.matches} />
       </div>
     )

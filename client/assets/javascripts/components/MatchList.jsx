@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseComponent from './BaseComponent';
+import Match from './Match';
 
 class MatchList extends BaseComponent {
   constructor(props) {
@@ -8,14 +9,12 @@ class MatchList extends BaseComponent {
   }
   render() {
     let matches = this.props.matches.data.map(function(match) {
-      return <li>{match.p_one_id} fought {match.p_two_id}</li>
+      return <Match key={match.id} {...match} />
     });
     return (
       <div>
         <h1> Match List </h1>
-        <ul>
-          {matches}
-        </ul>
+        {matches}
       </div>
     )
   }

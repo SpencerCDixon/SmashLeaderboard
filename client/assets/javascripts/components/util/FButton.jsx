@@ -1,7 +1,7 @@
 import React, { findDOMNode, Component, PropTypes } from 'react';
 import BaseComponent from '../BaseComponent';
 
-class FoundationButton extends BaseComponent {
+class FButton extends BaseComponent {
   constructor(props) {
     super(props);
     this._bind('handleClick');
@@ -23,4 +23,4 @@ class FoundationButton extends BaseComponent {
   }
 }
 
-export default FoundationButton
+export default FButton
