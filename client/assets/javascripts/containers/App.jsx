@@ -8,7 +8,8 @@ import { CharacterFilters,
          fetchCharacters,
          fetchUsers,
          saveMatch,
-         fetchMatches } from '../actions';
+         fetchMatches,
+         updateCurrentMatch } from '../actions';
 
 // Memoized Selector
 import { smashSelector } from '../selectors/SmashSelector';
@@ -32,7 +33,7 @@ const propTypes = {
 class App extends BaseComponent {
   constructor(props) {
     super(props);
-    this._bind('addMatch');
+    this._bind('addMatch', 'updateCurrentMatch');
   }
 
   componentDidMount() {
@@ -46,11 +47,18 @@ class App extends BaseComponent {
     this.props.dispatch(saveMatch(match));
   }
 
+  updateCurrentMatch(match) {
+    this.props.dispatch(updateCurrentMatch(match));
+  }
+
   render() {
     const { dispatch, characterFilter, characters } = this.props
     return (
       <div className="row">
-        <MatchRecorder addMatch={this.addMatch} {...this.props} />
+        <MatchRecorder 
+          updateCurrentMatch={this.updateCurrentMatch} 
+          addMatch={this.addMatch} 
+          {...this.props} />
         <MatchList matches={this.props.matches} />
       </div>
     )

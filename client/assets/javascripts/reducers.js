@@ -8,7 +8,8 @@ import { REQUEST_CHARACTERS,
          SAVE_MATCH_START,
          SAVE_MATCH_SUCCESS,
          REQUEST_MATCHES,
-         RECEIVE_MATCHES } from './actions';
+         RECEIVE_MATCHES,
+         UPDATE_CURRENT_MATCH } from './actions';
 
 const initialState      = { characterFilter: CharacterFilters.SHOW_ALL };
 const initialFetchState = { isFetching: false, didInvalidate: false, items: [] };
@@ -94,11 +95,27 @@ function matches(state = initialFetchState, action) {
   }
 }
 
+function currentMatch(state = {
+  players: { playerOne: '', playerTwo: '', playerThree: '', playerFour: '', },
+  chars: { playerOneChar: '', playerTwoChar: '', playerThreeChar: '', playerFourChar: '' }
+}, action) {
+  switch (action.type) {
+  case UPDATE_CURRENT_MATCH:
+    return Object.assign({}, state, {
+      players: action.currentMatch.players,
+      chars: action.currentMatch.chars
+    });
+  default:
+    return state;
+  }
+}
+
 const smashLeaderboard = combineReducers({
   characters,
   characterFilter,
   users,
-  matches
+  matches,
+  currentMatch
 });
 
 export default smashLeaderboard;

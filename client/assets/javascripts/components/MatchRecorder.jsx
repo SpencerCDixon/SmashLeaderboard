@@ -6,7 +6,7 @@ import FButton from './util/FButton';
 class MatchRecorder extends BaseComponent {
   constructor(props) {
     super(props);
-    this._bind('createMatch', 'resetPlayers');
+    this._bind('createMatch', 'resetPlayers', 'onPlayerChange');
   }
   
   resetPlayers() {
@@ -40,6 +40,23 @@ class MatchRecorder extends BaseComponent {
     this.resetPlayers()
   }
 
+  onPlayerChange() {
+    this.props.updateCurrentMatch({
+      players: {
+        playerOne: this.refs.playerOne.getPlayerChoice(),
+        playerTwo: this.refs.playerTwo.getPlayerChoice(),
+        playerThree: this.refs.playerThree.getPlayerChoice(),
+        playerFour: this.refs.playerFour.getPlayerChoice()
+      },
+      chars: {
+        playerOne: this.refs.playerOne.getCharacterChoice(),
+        playerTwo: this.refs.playerTwo.getCharacterChoice(),
+        playerThree: this.refs.playerThree.getCharacterChoice(),
+        playerFour: this.refs.playerFour.getCharacterChoice()
+      }
+    })
+  }
+
   render() {
     return (
       <div className="row">
@@ -48,28 +65,28 @@ class MatchRecorder extends BaseComponent {
             ref="playerOne"
             users={this.props.users.data}
             characters={this.props.characters.data}
-          />
+            onPlayerChange={this.onPlayerChange} />
         </div>
         <div className="large-3 columns">
           <Player 
             ref="playerTwo"
             users={this.props.users.data}
             characters={this.props.characters.data}
-          />
+            onPlayerChange={this.onPlayerChange} />
         </div>
         <div className="large-3 columns">
           <Player 
             ref="playerThree"
             users={this.props.users.data}
             characters={this.props.characters.data}
-          />
+            onPlayerChange={this.onPlayerChange} />
         </div>
         <div className="large-3 columns">
           <Player 
             ref="playerFour"
             users={this.props.users.data}
             characters={this.props.characters.data}
-          />
+            onPlayerChange={this.onPlayerChange} />
         </div>
 
         <FButton classNames="success" onClick={this.createMatch}>

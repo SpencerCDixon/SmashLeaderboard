@@ -15,7 +15,7 @@ class MatchesController < ApplicationController
       p_three_char_id: match_params[:playerThree][:character],
       p_four_char_id: match_params[:playerFour][:character],
     )
-    render json: Match.all.to_json
+    render json: Match.all
   end
 
   def match_params

@@ -1,6 +1,10 @@
 import React, { findDOMNode, Component, PropTypes } from 'react';
 import BaseComponent from './BaseComponent';
 
+const propTypes = {
+  onPlayerChange: React.PropTypes.func.isRequired,
+}
+
 class Player extends BaseComponent {
   constructor(props) {
     super(props);
@@ -29,16 +33,15 @@ class Player extends BaseComponent {
     let characters = this.props.characters.map(function(char) { 
       return <option value={char.id} key={char.id}>{char.name}</option>
     });
-  
     return (
       <div>
         <h1> Player {this.props.playerNumber} </h1>
-        <select ref="playerChoice">
+        <select ref="playerChoice" onChange={this.props.onPlayerChange}>
           <option></option>
           {players}
         </select>
 
-        <select ref="characterChoice">
+        <select ref="characterChoice" onChange={this.props.onPlayerChange}>
           <option></option>
           {characters}
         </select>
@@ -47,5 +50,6 @@ class Player extends BaseComponent {
   }
 }
 
+Player.propTypes = propTypes;
 
 export default Player

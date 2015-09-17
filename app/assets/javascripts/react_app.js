@@ -32052,7 +32052,7 @@
 	    _classCallCheck(this, App);
 
 	    _get(Object.getPrototypeOf(App.prototype), 'constructor', this).call(this, props);
-	    this._bind('addMatch');
+	    this._bind('addMatch', 'updateCurrentMatch');
 	  }
 
 	  _createClass(App, [{
@@ -32070,6 +32070,11 @@
 	      this.props.dispatch((0, _actions.saveMatch)(match));
 	    }
 	  }, {
+	    key: 'updateCurrentMatch',
+	    value: function updateCurrentMatch(match) {
+	      this.props.dispatch((0, _actions.updateCurrentMatch)(match));
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props;
@@ -32080,7 +32085,10 @@
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'row' },
-	        _react2['default'].createElement(_componentsMatchRecorder2['default'], _extends({ addMatch: this.addMatch }, this.props)),
+	        _react2['default'].createElement(_componentsMatchRecorder2['default'], _extends({
+	          updateCurrentMatch: this.updateCurrentMatch,
+	          addMatch: this.addMatch
+	        }, this.props)),
 	        _react2['default'].createElement(_componentsMatchList2['default'], { matches: this.props.matches })
 	      );
 	    }
@@ -32152,7 +32160,7 @@
 /* 502 */
 /***/ function(module, exports) {
 
-	//////////
+	////
 	// Characters
 	//////////
 	'use strict';
@@ -32174,6 +32182,7 @@
 	exports.saveMatchStart = saveMatchStart;
 	exports.saveMatchSuccess = saveMatchSuccess;
 	exports.saveMatch = saveMatch;
+	exports.updateCurrentMatch = updateCurrentMatch;
 	var ADD_CHARACTER = 'ADD_CHARACTER';
 	exports.ADD_CHARACTER = ADD_CHARACTER;
 	var SET_CHARACTER_FILTER = 'SET_CHARACTER_FILTER';
@@ -32265,8 +32274,12 @@
 	var REQUEST_MATCHES = 'REQUEST_MATCHES';
 	exports.REQUEST_MATCHES = REQUEST_MATCHES;
 	var RECEIVE_MATCHES = 'RECEIVE_MATCHES';
-
 	exports.RECEIVE_MATCHES = RECEIVE_MATCHES;
+	var UPDATE_CURRENT_MATCH = 'UPDATE_CURRENT_MATCH';
+	exports.UPDATE_CURRENT_MATCH = UPDATE_CURRENT_MATCH;
+	var CLEAR_CURRENT_MATCH = 'CLEAR_CURRENT_MATCH';
+
+	exports.CLEAR_CURRENT_MATCH = CLEAR_CURRENT_MATCH;
 
 	function requestMatches() {
 	  return { type: REQUEST_MATCHES };
@@ -32297,7 +32310,7 @@
 	function saveMatchSuccess(data) {
 	  return {
 	    type: SAVE_MATCH_SUCCESS,
-	    matches: data,
+	    matches: data.matches,
 	    receivedAt: Date.now()
 	  };
 	}
@@ -32310,6 +32323,10 @@
 	      dispatch(saveMatchSuccess(data));
 	    });
 	  };
+	}
+
+	function updateCurrentMatch(currentMatch) {
+	  return { type: UPDATE_CURRENT_MATCH, currentMatch: currentMatch };
 	}
 
 /***/ },
@@ -32479,7 +32496,7 @@
 	    _classCallCheck(this, MatchRecorder);
 
 	    _get(Object.getPrototypeOf(MatchRecorder.prototype), 'constructor', this).call(this, props);
-	    this._bind('createMatch', 'resetPlayers');
+	    this._bind('createMatch', 'resetPlayers', 'onPlayerChange');
 	  }
 
 	  _createClass(MatchRecorder, [{
@@ -32516,6 +32533,24 @@
 	      this.resetPlayers();
 	    }
 	  }, {
+	    key: 'onPlayerChange',
+	    value: function onPlayerChange() {
+	      this.props.updateCurrentMatch({
+	        players: {
+	          playerOne: this.refs.playerOne.getPlayerChoice(),
+	          playerTwo: this.refs.playerTwo.getPlayerChoice(),
+	          playerThree: this.refs.playerThree.getPlayerChoice(),
+	          playerFour: this.refs.playerFour.getPlayerChoice()
+	        },
+	        chars: {
+	          playerOne: this.refs.playerOne.getCharacterChoice(),
+	          playerTwo: this.refs.playerTwo.getCharacterChoice(),
+	          playerThree: this.refs.playerThree.getCharacterChoice(),
+	          playerFour: this.refs.playerFour.getCharacterChoice()
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2['default'].createElement(
@@ -32527,8 +32562,8 @@
 	          _react2['default'].createElement(_Player2['default'], {
 	            ref: 'playerOne',
 	            users: this.props.users.data,
-	            characters: this.props.characters.data
-	          })
+	            characters: this.props.characters.data,
+	            onPlayerChange: this.onPlayerChange })
 	        ),
 	        _react2['default'].createElement(
 	          'div',
@@ -32536,8 +32571,8 @@
 	          _react2['default'].createElement(_Player2['default'], {
 	            ref: 'playerTwo',
 	            users: this.props.users.data,
-	            characters: this.props.characters.data
-	          })
+	            characters: this.props.characters.data,
+	            onPlayerChange: this.onPlayerChange })
 	        ),
 	        _react2['default'].createElement(
 	          'div',
@@ -32545,8 +32580,8 @@
 	          _react2['default'].createElement(_Player2['default'], {
 	            ref: 'playerThree',
 	            users: this.props.users.data,
-	            characters: this.props.characters.data
-	          })
+	            characters: this.props.characters.data,
+	            onPlayerChange: this.onPlayerChange })
 	        ),
 	        _react2['default'].createElement(
 	          'div',
@@ -32554,8 +32589,8 @@
 	          _react2['default'].createElement(_Player2['default'], {
 	            ref: 'playerFour',
 	            users: this.props.users.data,
-	            characters: this.props.characters.data
-	          })
+	            characters: this.props.characters.data,
+	            onPlayerChange: this.onPlayerChange })
 	        ),
 	        _react2['default'].createElement(
 	          _utilFButton2['default'],
@@ -32599,6 +32634,10 @@
 	var _BaseComponent2 = __webpack_require__(501);
 
 	var _BaseComponent3 = _interopRequireDefault(_BaseComponent2);
+
+	var propTypes = {
+	  onPlayerChange: _react2['default'].PropTypes.func.isRequired
+	};
 
 	var Player = (function (_BaseComponent) {
 	  _inherits(Player, _BaseComponent);
@@ -32646,7 +32685,6 @@
 	          char.name
 	        );
 	      });
-
 	      return _react2['default'].createElement(
 	        'div',
 	        null,
@@ -32659,13 +32697,13 @@
 	        ),
 	        _react2['default'].createElement(
 	          'select',
-	          { ref: 'playerChoice' },
+	          { ref: 'playerChoice', onChange: this.props.onPlayerChange },
 	          _react2['default'].createElement('option', null),
 	          players
 	        ),
 	        _react2['default'].createElement(
 	          'select',
-	          { ref: 'characterChoice' },
+	          { ref: 'characterChoice', onChange: this.props.onPlayerChange },
 	          _react2['default'].createElement('option', null),
 	          characters
 	        )
@@ -32675,6 +32713,8 @@
 
 	  return Player;
 	})(_BaseComponent3['default']);
+
+	Player.propTypes = propTypes;
 
 	exports['default'] = Player;
 	module.exports = exports['default'];
@@ -33102,11 +33142,29 @@
 	  }
 	}
 
+	function currentMatch(state, action) {
+	  if (state === undefined) state = {
+	    players: { playerOne: '', playerTwo: '', playerThree: '', playerFour: '' },
+	    chars: { playerOneChar: '', playerTwoChar: '', playerThreeChar: '', playerFourChar: '' }
+	  };
+
+	  switch (action.type) {
+	    case _actions.UPDATE_CURRENT_MATCH:
+	      return Object.assign({}, state, {
+	        players: action.currentMatch.players,
+	        chars: action.currentMatch.chars
+	      });
+	    default:
+	      return state;
+	  }
+	}
+
 	var smashLeaderboard = (0, _redux.combineReducers)({
 	  characters: characters,
 	  characterFilter: characterFilter,
 	  users: users,
-	  matches: matches
+	  matches: matches,
+	  currentMatch: currentMatch
 	});
 
 	exports['default'] = smashLeaderboard;

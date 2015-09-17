@@ -80,6 +80,8 @@ export const SAVE_MATCH_START = 'SAVE_MATCH_START';
 export const SAVE_MATCH_SUCCESS = 'SAVE_MATCH_SUCCESS';
 export const REQUEST_MATCHES = 'REQUEST_MATCHES';
 export const RECEIVE_MATCHES = 'RECEIVE_MATCHES';
+export const UPDATE_CURRENT_MATCH = 'UPDATE_CURRENT_MATCH';
+export const CLEAR_CURRENT_MATCH = 'CLEAR_CURRENT_MATCH';
 
 export function requestMatches() {
   return { type: REQUEST_MATCHES };
@@ -110,7 +112,7 @@ export function saveMatchStart() {
 export function saveMatchSuccess(data) {
   return {
     type: SAVE_MATCH_SUCCESS,
-    matches: data,
+    matches: data.matches,
     receivedAt: Date.now()
   }
 }
@@ -123,6 +125,10 @@ export function saveMatch(match) {
       dispatch(saveMatchSuccess(data));
     })
   }
+}
+
+export function updateCurrentMatch(currentMatch) {
+  return { type: UPDATE_CURRENT_MATCH, currentMatch }
 }
 
 
