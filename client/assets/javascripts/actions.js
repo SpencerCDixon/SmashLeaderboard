@@ -1,4 +1,4 @@
-//////////
+////
 // Characters
 //////////
 export const ADD_CHARACTER = 'ADD_CHARACTER';
@@ -57,7 +57,7 @@ export function requestUsers() {
 export function receiveUsers(data) {
   return {
     type: RECEIVE_USERS,
-    users: data,
+    users: data.users,
     receivedAt: Date.now()
   }
 }
@@ -88,7 +88,7 @@ export function requestMatches() {
 export function receiveMatches(data) {
   return {
     type: RECEIVE_MATCHES,
-    matches: data,
+    matches: data.matches,
     receivedAt: Date.now()
   }
 }

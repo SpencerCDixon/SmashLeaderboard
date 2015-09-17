@@ -11,7 +11,7 @@ class Match extends BaseComponent {
   render() {
     return (
       <FPanel>
-        <span>{this.props.p_one_id} fought {this.props.p_two_id}</span>
+        <span>{this.props.player_one} fought {this.props.player_two}</span>
       </FPanel>
     )
   }

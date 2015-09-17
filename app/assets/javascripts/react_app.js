@@ -32239,7 +32239,7 @@
 	function receiveUsers(data) {
 	  return {
 	    type: RECEIVE_USERS,
-	    users: data,
+	    users: data.users,
 	    receivedAt: Date.now()
 	  };
 	}
@@ -32275,7 +32275,7 @@
 	function receiveMatches(data) {
 	  return {
 	    type: RECEIVE_MATCHES,
-	    matches: data,
+	    matches: data.matches,
 	    receivedAt: Date.now()
 	  };
 	}
@@ -32862,9 +32862,9 @@
 	        _react2['default'].createElement(
 	          'span',
 	          null,
-	          this.props.p_one_id,
+	          this.props.player_one,
 	          ' fought ',
-	          this.props.p_two_id
+	          this.props.player_two
 	        )
 	      );
 	    }
